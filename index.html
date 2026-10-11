@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GAMEHUB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#08070d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="GameHub">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P|VT323&amp;display=swap">
+<link rel="stylesheet" href="css/hub.css">
+
+<!-- GAME STYLES: one line per game, added here -->
+<link rel="stylesheet" href="games/2048/2048.css">
+<link rel="stylesheet" href="games/snake/snake.css">
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="scanlines"></div>
+
+<!-- HUB: the game selection screen -->
+<div id="hub" class="view">
+  <header class="hub-head">
+    <div id="hubMark" class="mark"></div>
+    <div class="logo"><span class="a">GAME</span><span class="b">HUB</span></div>
+    <div class="sub">SELECT GAME<span class="blink">_</span></div>
+  </header>
+  <div class="section-row">
+    <h2>CHOOSE A GAME</h2>
+    <span id="gameCount" class="count">00</span>
+  </div>
+  <div id="gameGrid" class="grid"></div>
+  <footer class="foot">HI-SCORES ARE SAVED ON THIS DEVICE</footer>
+</div>
+
+<!-- PLAY: hosts whichever game is open -->
+<div id="play" class="view hidden">
+  <div class="topbar">
+    <button id="backBtn" class="btn" type="button">&lt; BACK</button>
+    <div id="playTitle" class="play-title"></div>
+  </div>
+  <div id="stage" class="stage"></div>
+  <p id="howto" class="howto"></p>
+</div>
+
+<!-- CORE: registry + helpers. Must load before any game. -->
+<script src="js/core.js"></script>
+
+<!-- GAMES: one line per game, added here -->
+<script src="games/2048/2048.js"></script>
+<script src="games/snake/snake.js"></script>
+
+<!-- APP: hub screen + router. Must load after the games. -->
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+/* 2048: everything is scoped under .g2048 so it cannot leak into other games. */
+
+.g2048 {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* ---------- score row ---------- */
+
+.g2048 .hud {
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 14px;
+}
+.g2048 .hud > * { margin-right: 10px; }
+.g2048 .hud > *:last-child { margin-right: 0; }
+
+.g2048 .brand {
+  -webkit-flex: 1.1 1 0;
+  flex: 1.1 1 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-family: var(--px);
+  font-size: 15px;
+  color: var(--bg);
+  background: var(--cyan);
+  border: 4px solid var(--cyan);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.g2048 .box {
+  -webkit-flex: 1 1 0;
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+  padding: 8px 4px 8px;
+  text-align: center;
+  background: var(--surface);
+  border: 4px solid var(--line);
+  box-shadow: 4px 4px 0 #000;
+}
+.g2048 .box .lbl {
+  font-family: var(--px);
+  font-size: 7px;
+  color: var(--mute);
+}
+.g2048 .box .val {
+  margin-top: 8px;
+  font-family: var(--px);
+  font-size: 12px;
+  color: var(--text);
+}
+.g2048 .box.best .val { color: var(--amber); }
+
+.g2048 .plus {
+  position: absolute;
+  right: 4px;
+  top: 2px;
+  font-family: var(--px);
+  font-size: 9px;
+  color: var(--green);
+  -webkit-animation: g2048-plus 0.6s ease-out forwards;
+  animation: g2048-plus 0.6s ease-out forwards;
+  pointer-events: none;
+}
+@-webkit-keyframes g2048-plus {
+  0% { opacity: 1; -webkit-transform: translateY(0); }
+  100% { opacity: 0; -webkit-transform: translateY(-22px); }
+}
+@keyframes g2048-plus {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-22px); }
+}
+
+/* ---------- board ---------- */
+
+.g2048 .sq {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+}
+.g2048 .board {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--surface);
+  border: 4px solid var(--violet);
+  box-shadow: 4px 4px 0 #000;
+}
+.g2048 .field {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+}
+
+.g2048 .cell,
+.g2048 .tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: 25%;
+}
+.g2048 .tile {
+  -webkit-transition: -webkit-transform 0.11s ease-out;
+  transition: transform 0.11s ease-out;
+}
+.g2048 .cell .c {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  background: var(--surface-2);
+  box-shadow: inset 4px 4px 0 rgba(0, 0, 0, 0.35);
+}
+
+.g2048 .t {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  font-family: var(--px);
+  color: var(--text);
+  background: #3a3870;
+  box-shadow:
+    inset 4px 4px 0 rgba(255, 255, 255, 0.2),
+    inset -4px -4px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* tile ramp: cool to hot as the numbers grow */
+.g2048 .t.v2    { background: #3a3870; }
+.g2048 .t.v4    { background: #5b4bb8; }
+.g2048 .t.v8    { background: #8b5cf6; }
+.g2048 .t.v16   { background: #c04dd8; }
+.g2048 .t.v32   { background: #ff2ec4; }
+.g2048 .t.v64   { background: #ff4d6d; }
+.g2048 .t.v128  { background: #ff8a3d; }
+.g2048 .t.v256  { background: #ffb703; color: var(--bg); }
+.g2048 .t.v512  { background: #c8e03a; color: var(--bg); }
+.g2048 .t.v1024 { background: #34d97a; color: var(--bg); }
+.g2048 .t.v2048 { background: #05e6e6; color: var(--bg); }
+.g2048 .t.vbig  { background: #eef0ff; color: var(--bg); }
+
+.g2048 .t.d1, .g2048 .t.d2 { font-size: 24px; }
+.g2048 .t.d3 { font-size: 20px; }
+.g2048 .t.d4 { font-size: 16px; }
+.g2048 .t.d5, .g2048 .t.d6, .g2048 .t.d7 { font-size: 12px; }
+
+.g2048 .t.new {
+  -webkit-animation: g2048-appear 0.16s ease-out 0.1s backwards;
+  animation: g2048-appear 0.16s ease-out 0.1s backwards;
+}
+.g2048 .t.pop {
+  -webkit-animation: g2048-pop 0.16s ease-out;
+  animation: g2048-pop 0.16s ease-out;
+}
+@-webkit-keyframes g2048-appear {
+  0% { -webkit-transform: scale(0); }
+  100% { -webkit-transform: scale(1); }
+}
+@keyframes g2048-appear {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+@-webkit-keyframes g2048-pop {
+  0% { -webkit-transform: scale(1); }
+  50% { -webkit-transform: scale(1.18); }
+  100% { -webkit-transform: scale(1); }
+}
+@keyframes g2048-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- win / game over ---------- */
+
+.g2048 .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  background: rgba(8, 7, 13, 0.88);
+}
+.g2048 .overlay h2 {
+  margin: 0 0 12px;
+  font-family: var(--px);
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.g2048 .overlay h2.win { color: var(--cyan); text-shadow: 3px 3px 0 var(--violet); }
+.g2048 .overlay h2.over { color: var(--red); text-shadow: 3px 3px 0 #5a1124; }
+.g2048 .overlay p {
+  margin: 0 0 18px;
+  font-size: 22px;
+  color: var(--dim);
+}
+.g2048 .overlay .row .btn { margin: 0 5px 8px; }
+
+/* ---------- controls ---------- */
+
+.g2048 .controls {
+  display: -webkit-flex;
+  display: flex;
+  margin-top: 16px;
+}
+.g2048 .controls .btn {
+  -webkit-flex: 1 1 0;
+  flex: 1 1 0;
+  margin-right: 12px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-align: center;
+}
+.g2048 .controls .btn:last-child { margin-right: 0; }

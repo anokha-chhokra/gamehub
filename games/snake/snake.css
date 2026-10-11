@@ -1,0 +1,109 @@
+/* Snake: everything is scoped under .gsnake so it cannot leak into other games. */
+
+.gsnake {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* ---------- score row ---------- */
+
+.gsnake .hud {
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 14px;
+}
+.gsnake .hud > * { margin-right: 10px; }
+.gsnake .hud > *:last-child { margin-right: 0; }
+
+.gsnake .box {
+  -webkit-flex: 1 1 0;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 8px 4px;
+  text-align: center;
+  background: var(--surface);
+  border: 4px solid var(--line);
+  box-shadow: 4px 4px 0 #000;
+}
+.gsnake .box .lbl {
+  font-family: var(--px);
+  font-size: 7px;
+  color: var(--mute);
+}
+.gsnake .box .val {
+  margin-top: 8px;
+  font-family: var(--px);
+  font-size: 12px;
+  color: var(--text);
+}
+.gsnake .box.best .val { color: var(--amber); }
+.gsnake .box.lvl .val { color: var(--green); }
+
+/* ---------- board ---------- */
+
+.gsnake .board {
+  position: relative;
+  margin: 0 auto;
+  background: var(--bg);
+  border: 4px solid var(--green);
+  box-shadow: 4px 4px 0 #000;
+}
+.gsnake canvas {
+  display: block;
+  width: 100%;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+}
+
+/* ---------- ready / paused / game over ---------- */
+
+.gsnake .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  background: rgba(8, 7, 13, 0.86);
+}
+.gsnake .overlay h2 {
+  margin: 0 0 12px;
+  font-family: var(--px);
+  font-size: 20px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.gsnake .overlay h2.ready { color: var(--green); text-shadow: 3px 3px 0 #0f5a30; }
+.gsnake .overlay h2.win { color: var(--cyan); text-shadow: 3px 3px 0 var(--violet); }
+.gsnake .overlay h2.over { color: var(--red); text-shadow: 3px 3px 0 #5a1124; }
+.gsnake .overlay p {
+  margin: 0 0 18px;
+  font-size: 22px;
+  color: var(--dim);
+}
+
+/* ---------- controls ---------- */
+
+.gsnake .controls {
+  display: -webkit-flex;
+  display: flex;
+  margin-top: 16px;
+}
+.gsnake .controls .btn {
+  -webkit-flex: 1 1 0;
+  flex: 1 1 0;
+  margin-right: 12px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-align: center;
+}
+.gsnake .controls .btn:last-child { margin-right: 0; }
