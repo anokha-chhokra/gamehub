@@ -2,7 +2,7 @@
 
 A pocket arcade for the browser, built for the **iPhone 6 Plus** (414x736 viewport, iOS 12 / Safari 12). Plain HTML, CSS and JavaScript: no build step, no dependencies. The look is the 8-bit Neon Arcade theme (hard pixel edges, scanlines, Press Start 2P).
 
-Games so far: **2048**, **Snake**, **Jewel Quest**, **8-Ball Pool**.
+Games so far: **2048**, **Snake**, **Jewel Quest**, **8-Ball Pool**, **Diamond Rush**.
 
 ## Running it
 
@@ -68,6 +68,22 @@ The hub card, the route, the Back button and the "More games soon" slot all upda
 - **Scope your CSS** under one class (`.g2048`, `.gsnake`) so games never collide. Reuse `.btn`, `.btn.primary` and the colour variables from `hub.css`.
 - **Safari 12:** ES5-style JS (this codebase uses `var` and `function`; avoid `?.` and `??`), no flex `gap`, no `inset`, no `aspect-ratio`, no `clamp()`. Use `grid-gap`, `-webkit-` prefixes where Safari 12 needs them, and `touchmove` + `preventDefault()` (with `{ passive: false }`) to stop the page scrolling during swipes, since `touch-action: none` is not supported there.
 - Keep tap targets at least 44px and the game within 414px wide.
+
+## Diamond Rush notes
+
+A turn-based temple puzzle with 12 levels on a level map. Collect every diamond to open the exit, then walk in. Each action is one step, and after any action that does something, every snake takes one step.
+
+- **Controls:** drag on the board to walk (keep dragging to keep walking), or use the pad (hold to repeat). **WAIT** skips a turn so a snake can slide past. **UNDO** takes back any number of moves, **RESET** restarts the level (asks for a second tap). Desktop: arrows/WASD, Space = wait, Z = undo.
+- **The world:** dirt (`:`) digs away; boulders (`O`) push one tile and fill spikes (`^`) or crush a snake; red/blue keys (`r`/`b`) open red/blue doors (`R`/`B`); snakes (`H`/`h` left-right, `V`/`v` up-down) patrol and turn at walls; stepping on spikes or into a snake ends the run (undo it).
+- **Stars:** 3 stars within about 10% of par, 2 stars within about 50%. **Par is the true optimum**, found by a solver, not a guess.
+- **Rules live in `engine.js`**, which has no DOM and also runs in Node. That is how every level is proven solvable.
+- **Adding or editing a level:** change `games/diamondrush/levels.js` (max 9x9), then run
+
+  ```bash
+  node games/diamondrush/check-levels.js
+  ```
+
+  It solves every level, tells you if one is unsolvable or if a stored `par` is stale, and lists which mechanics the best solution uses (so a level meant to teach boulders really needs one). Paste the reported par into the level.
 
 ## 8-Ball Pool notes
 
