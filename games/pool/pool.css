@@ -1,0 +1,259 @@
+/*
+ * 8-Ball Pool: everything is scoped under .gpool so it cannot leak into other games.
+ * The game covers the whole viewport (it is a landscape game), so these rules lay out the screen
+ * from scratch: a thin HUD on top, then [fine-aim dial] [table] [power bar] side by side.
+ */
+
+.gpool {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ---------- HUD ---------- */
+
+.gpool .hud {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  height: 38px;
+  padding: 0 8px;
+  background: var(--surface);
+  border-bottom: 4px solid var(--line);
+}
+.gpool .hud > * { margin-right: 8px; }
+.gpool .hud > *:last-child { margin-right: 0; }
+
+.gpool .btn.small {
+  min-height: 28px;
+  padding: 6px 8px;
+  font-size: 8px;
+  border-width: 3px;
+  box-shadow: 3px 3px 0 #000;
+}
+
+.gpool .pl {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.gpool .pname {
+  margin-right: 6px;
+  padding: 3px 5px;
+  font-family: var(--px);
+  font-size: 8px;
+  color: var(--mute);
+  border: 3px solid transparent;
+}
+.gpool .pname.on {
+  color: var(--bg);
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.gpool .tray {
+  display: -webkit-flex;
+  display: flex;
+}
+.gpool .tray canvas {
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin-right: 1px;
+}
+.gpool .status {
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-family: var(--px);
+  font-size: 8px;
+  color: var(--cyan);
+}
+
+/* ---------- table + side controls ---------- */
+
+.gpool .main {
+  position: relative;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.gpool .tablewrap {
+  position: relative;
+  margin: 0 6px;
+}
+.gpool canvas.table {
+  display: block;
+  box-shadow: 4px 4px 0 #000;
+}
+
+.gpool .toast {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 90%;
+  padding: 8px 12px;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-family: var(--px);
+  font-size: 10px;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--bg);
+  background: var(--amber);
+  border: 4px solid #000;
+  opacity: 0;
+  pointer-events: none;
+}
+.gpool .toast.show { opacity: 1; }
+
+.gpool .side {
+  position: relative;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+.gpool .side.left { width: 50px; }
+.gpool .side.right { width: 58px; }
+.gpool .lbl {
+  margin: 2px 0 6px;
+  font-family: var(--px);
+  font-size: 7px;
+  color: var(--mute);
+}
+
+/* fine-aim dial: drag up/down to nudge the aim */
+.gpool .dial {
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  width: 38px;
+  background-color: var(--surface);
+  background-image: repeating-linear-gradient(0deg, var(--mute) 0, var(--mute) 2px, transparent 2px, transparent 12px);
+  background-size: 100% 12px;
+  border: 4px solid var(--line);
+  box-shadow: 3px 3px 0 #000;
+}
+.gpool .ok {
+  position: absolute;
+  left: 2px;
+  width: 46px;
+  height: 60px;
+  padding: 0;
+  top: 50%;
+  margin-top: -20px;
+}
+
+/* power bar: drag down to pull the cue back, let go to shoot */
+.gpool .pbar {
+  position: relative;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  width: 40px;
+  background: var(--surface);
+  border: 4px solid var(--line);
+  box-shadow: 3px 3px 0 #000;
+}
+.gpool .pfill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  background-color: var(--green);
+  background-image: repeating-linear-gradient(0deg, transparent 0, transparent 6px, rgba(0, 0, 0, 0.45) 6px, rgba(0, 0, 0, 0.45) 8px);
+}
+
+/* ---------- overlays: menu, game over, rotate prompt ---------- */
+
+.gpool .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+  background: rgba(8, 7, 13, 0.9);
+}
+.gpool .overlay h2 {
+  margin: 0 0 12px;
+  font-family: var(--px);
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 1.3;
+  color: var(--magenta);
+  text-shadow: 3px 3px 0 var(--violet);
+}
+.gpool .overlay h2.win { color: var(--cyan); }
+.gpool .overlay h2.lose { color: var(--red); text-shadow: 3px 3px 0 #5a1124; }
+.gpool .overlay p {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: var(--dim);
+}
+.gpool .overlay .row {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.gpool .overlay .row .btn { margin: 0 6px 8px; }
+.gpool .chip { color: var(--dim); border-color: var(--line); }
+.gpool .chip.on { color: var(--bg); background: var(--amber); border-color: var(--amber); }
+
+.gpool .rotate { z-index: 10; background: var(--bg); }
+.gpool .rotate .phone {
+  width: 64px;
+  height: 60px;
+  margin-bottom: 14px;
+  -webkit-animation: gpool-turn 2s steps(1) infinite;
+  animation: gpool-turn 2s steps(1) infinite;
+}
+.gpool .rotate .phone svg { display: block; width: 100%; height: 100%; }
+@-webkit-keyframes gpool-turn { 50% { -webkit-transform: rotate(90deg); } }
+@keyframes gpool-turn { 50% { transform: rotate(90deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gpool .rotate .phone { -webkit-animation: none; animation: none; }
+}

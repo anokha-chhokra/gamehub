@@ -2,7 +2,7 @@
 
 A pocket arcade for the browser, built for the **iPhone 6 Plus** (414x736 viewport, iOS 12 / Safari 12). Plain HTML, CSS and JavaScript: no build step, no dependencies. The look is the 8-bit Neon Arcade theme (hard pixel edges, scanlines, Press Start 2P).
 
-Games so far: **2048**, **Snake**, **Jewel Quest**.
+Games so far: **2048**, **Snake**, **Jewel Quest**, **8-Ball Pool**.
 
 ## Running it
 
@@ -68,6 +68,17 @@ The hub card, the route, the Back button and the "More games soon" slot all upda
 - **Scope your CSS** under one class (`.g2048`, `.gsnake`) so games never collide. Reuse `.btn`, `.btn.primary` and the colour variables from `hub.css`.
 - **Safari 12:** ES5-style JS (this codebase uses `var` and `function`; avoid `?.` and `??`), no flex `gap`, no `inset`, no `aspect-ratio`, no `clamp()`. Use `grid-gap`, `-webkit-` prefixes where Safari 12 needs them, and `touchmove` + `preventDefault()` (with `{ passive: false }`) to stop the page scrolling during swipes, since `touch-action: none` is not supported there.
 - Keep tap targets at least 44px and the game within 414px wide.
+
+## 8-Ball Pool notes
+
+A landscape game: it takes over the whole screen, and in portrait it shows a "rotate your phone" prompt. Pick **Vs Computer** (Easy / Normal / Hard) or **2 Players** (pass the phone).
+
+- **Aim:** drag on the table and the cue points at your finger, with a dotted guide showing the first contact, where the object ball goes (amber) and where the cue ball goes (cyan). Use the **FINE** strip on the left to nudge the aim in tiny steps.
+- **Shoot:** drag down on the **POWER** bar on the right and let go. Letting go near the top cancels. (Desktop: arrow keys aim and set power, Space shoots.)
+- **Rules (8-ball):** the table is open until someone legally pots a ball, which picks solids or stripes. Pot your own group to keep shooting, then sink the 8 to win. Fouls (scratch, wrong ball first, missing every ball, no rail after contact) give the other player ball-in-hand: drag the cue ball where you want it and press OK. Sinking the 8 early or on a foul loses; an 8 on the break is spotted again.
+- **Smoothness:** physics runs on a fixed 240 Hz step inside `requestAnimationFrame`, so speed does not depend on the device and fast balls cannot pass through each other. Balls roll visibly (the number disc turns as they travel).
+- **Computer:** it looks for a ball, pocket and clear path with the smallest cut angle, then adds aim and power error by level. With ball-in-hand it tries a grid of spots and picks the one with the best shot.
+- Tuning knobs (friction, bounce, power, pocket sizes) are the constants at the top of `pool.js`.
 
 ## Jewel Quest notes
 
