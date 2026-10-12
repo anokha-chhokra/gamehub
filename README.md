@@ -2,7 +2,7 @@
 
 A pocket arcade for the browser, built for the **iPhone 6 Plus** (414x736 viewport, iOS 12 / Safari 12). Plain HTML, CSS and JavaScript: no build step, no dependencies. The look is the 8-bit Neon Arcade theme (hard pixel edges, scanlines, Press Start 2P).
 
-Games so far: **2048**, **Snake**.
+Games so far: **2048**, **Snake**, **Jewel Quest**.
 
 ## Running it
 
@@ -39,7 +39,8 @@ The pixel fonts (Press Start 2P, VT323) load from Google Fonts. Offline, the app
      tagline: 'Beat the CPU.',
      category: 'Arcade',
      accent: '#ff2ec4',            // card border / name colour
-     scoreKey: 'best',             // optional: store key holding the best score; shown on the hub card
+     scoreKey: 'best',             // optional: store key holding a number; shown on the hub card
+     scoreLabel: 'BEST',           // optional: word shown before that number (default 'BEST')
      instructions: 'Drag to move your paddle.',
      icon: { rows: ['..aa..', '.aaaa.'], palette: { a: '#ff2ec4' } },  // ASCII pixel art, '.' = empty
 
@@ -67,6 +68,17 @@ The hub card, the route, the Back button and the "More games soon" slot all upda
 - **Scope your CSS** under one class (`.g2048`, `.gsnake`) so games never collide. Reuse `.btn`, `.btn.primary` and the colour variables from `hub.css`.
 - **Safari 12:** ES5-style JS (this codebase uses `var` and `function`; avoid `?.` and `??`), no flex `gap`, no `inset`, no `aspect-ratio`, no `clamp()`. Use `grid-gap`, `-webkit-` prefixes where Safari 12 needs them, and `touchmove` + `preventDefault()` (with `{ passive: false }`) to stop the page scrolling during swipes, since `touch-action: none` is not supported there.
 - Keep tap targets at least 44px and the game within 414px wide.
+
+## Jewel Quest notes
+
+A match-3 adventure with 12 levels on a quest map. Swipe a jewel towards a neighbour (or tap two neighbours) to swap them; any swap that makes a line of 3+ is kept, otherwise it bounces back. Every jewel you clear turns the tile under it one step towards gold, and you win a level when every tile is gold. Later levels add armoured tiles (`2`) that need two matches.
+
+- **Quest map:** levels unlock one at a time. Each cleared level shows 1-3 stars, based on how few moves you used (thresholds are the `STAR*` constants at the top of `jewelquest.js`).
+- **Hint** highlights the swap that clears the most tiles that are not gold yet, which is the best help for stubborn corner tiles.
+- If no legal swap is left, the board reshuffles itself.
+- Progress is stored under `gamehub.jewelquest.progress`; the hub card shows how many levels you have cleared.
+- **Adding or retuning levels:** edit `games/jewelquest/levels.js`. Each level is a name, a one-line story blurb, how many jewel kinds are in play (5-7), and an ASCII board (`#` one-match tile, `2` two-match tile, `.` hole). Keep boards at most 8 columns wide so cells stay at least 44px.
+- **Test seam:** if `window.__jqDebug = {}` is set before the game opens, the game fills in `peek`, `move`, `allMoves`, `swap` and `open` on it so a script can play the game. It does nothing otherwise.
 
 ## Snake notes
 

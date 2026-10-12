@@ -65,7 +65,7 @@
       el('div', { class: 'tag', text: game.tagline || '' }),
       el('div', { class: 'meta' }, [
         el('span', { class: 'cat', text: (game.category || 'Game').toUpperCase() }),
-        el('span', { class: 'best', text: best === null ? '' : 'BEST ' + best })
+        el('span', { class: 'best', text: best === null ? '' : (game.scoreLabel || 'BEST') + ' ' + best })
       ])
     ]);
     if (game.accent) { card.style.setProperty('--accent', game.accent); }

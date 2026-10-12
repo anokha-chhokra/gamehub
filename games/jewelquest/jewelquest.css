@@ -1,0 +1,278 @@
+/* Jewel Quest: everything is scoped under .gjq so it cannot leak into other games. */
+
+.gjq {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   Quest map
+   ========================================================= */
+
+.gjq .map-head {
+  text-align: center;
+  padding: 6px 0 4px;
+}
+.gjq .map-head .title {
+  font-family: var(--px);
+  font-size: 18px;
+  color: var(--amber);
+  text-shadow: 3px 3px 0 #6b3d00;
+}
+.gjq .map-head .blurb {
+  margin-top: 12px;
+  font-size: 20px;
+  color: var(--dim);
+}
+.gjq .map-head .tally {
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-top: 10px;
+  padding: 6px 10px;
+  font-family: var(--px);
+  font-size: 10px;
+  color: var(--amber);
+  background: var(--surface);
+  border: 4px solid var(--line);
+}
+.gjq .map-head .tally svg { display: block; width: 14px; height: 14px; margin-right: 8px; }
+
+.gjq .path {
+  position: relative;
+  width: 100%;
+}
+
+.gjq .dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  background: var(--line);
+}
+.gjq .dot.lit { background: var(--amber); }
+
+.gjq .node {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  margin-left: -28px;
+  padding: 0;
+  font-family: var(--px);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 4px solid var(--cyan);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 #000;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.gjq .node:active {
+  -webkit-transform: translate(3px, 3px);
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #000;
+}
+.gjq .node.done {
+  color: var(--bg);
+  background: var(--amber);
+  border-color: #ffd45e;
+}
+.gjq .node.current {
+  -webkit-animation: gjq-pulse 1.2s steps(1) infinite;
+  animation: gjq-pulse 1.2s steps(1) infinite;
+}
+.gjq .node.locked {
+  color: var(--mute);
+  background: var(--bg);
+  border-style: dashed;
+  border-color: var(--line);
+  box-shadow: none;
+  cursor: default;
+}
+@-webkit-keyframes gjq-pulse { 50% { border-color: var(--amber); } }
+@keyframes gjq-pulse { 50% { border-color: var(--amber); } }
+
+.gjq .node-stars {
+  position: absolute;
+  width: 60px;
+  margin-left: -30px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.gjq .node-stars span { margin: 0 1px; }
+.gjq .node-stars svg { display: block; width: 14px; height: 14px; }
+
+.gjq .label {
+  position: absolute;
+  width: 120px;
+  font-size: 21px;
+  line-height: 1;
+  color: var(--text);
+}
+.gjq .label.dim { color: var(--mute); }
+
+/* =========================================================
+   Level screen
+   ========================================================= */
+
+.gjq .hud {
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 10px;
+}
+.gjq .hud > * { margin-right: 10px; }
+.gjq .hud > *:last-child { margin-right: 0; }
+
+.gjq .box {
+  -webkit-flex: 1 1 0;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 7px 4px;
+  text-align: center;
+  background: var(--surface);
+  border: 4px solid var(--line);
+  box-shadow: 4px 4px 0 #000;
+}
+.gjq .box .lbl {
+  font-family: var(--px);
+  font-size: 7px;
+  color: var(--mute);
+}
+.gjq .box .val {
+  margin-top: 7px;
+  font-family: var(--px);
+  font-size: 12px;
+  color: var(--text);
+}
+.gjq .box.lvl .val { color: var(--amber); }
+.gjq .box.mv .val { color: var(--cyan); }
+
+/* gold progress bar */
+.gjq .bar {
+  position: relative;
+  margin-bottom: 12px;
+}
+.gjq .bar .track {
+  height: 20px;
+  background: var(--surface);
+  border: 4px solid var(--line);
+}
+.gjq .bar .fill {
+  height: 100%;
+  width: 0;
+  background-color: var(--amber);
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent 6px, rgba(0, 0, 0, 0.35) 6px, rgba(0, 0, 0, 0.35) 8px);
+  -webkit-transition: width 0.25s steps(6);
+  transition: width 0.25s steps(6);
+}
+.gjq .bar .bar-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  line-height: 20px;
+  text-align: center;
+  font-family: var(--px);
+  font-size: 7px;
+  color: var(--text);
+  text-shadow: 1px 1px 0 #000;
+}
+
+.gjq .board {
+  position: relative;
+  margin: 0 auto;
+  background: var(--bg);
+  border: 4px solid var(--amber);
+  box-shadow: 4px 4px 0 #000;
+}
+.gjq canvas {
+  display: block;
+  width: 100%;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+}
+
+/* intro / level clear */
+.gjq .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding: 14px;
+  text-align: center;
+  background: rgba(8, 7, 13, 0.9);
+}
+.gjq .overlay h2 {
+  margin: 0 0 10px;
+  font-family: var(--px);
+  font-size: 18px;
+  font-weight: normal;
+  line-height: 1.3;
+}
+.gjq .overlay h2.ready { color: var(--amber); text-shadow: 3px 3px 0 #6b3d00; }
+.gjq .overlay h2.win { color: var(--cyan); text-shadow: 3px 3px 0 var(--violet); }
+.gjq .overlay h3 {
+  margin: 0 0 10px;
+  font-family: var(--px);
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 1.5;
+  color: var(--text);
+}
+.gjq .overlay h3:empty { display: none; }
+.gjq .overlay .stars {
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 8px;
+}
+.gjq .overlay .stars:empty { display: none; }
+.gjq .overlay .stars span { margin: 0 5px; }
+.gjq .overlay .stars svg { display: block; width: 36px; height: 36px; }
+.gjq .overlay p {
+  margin: 0 0 16px;
+  font-size: 21px;
+  line-height: 1.1;
+  color: var(--dim);
+}
+.gjq .overlay .row {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.gjq .overlay .row .btn { margin: 0 5px 8px; }
+
+.gjq .controls {
+  display: -webkit-flex;
+  display: flex;
+  margin-top: 16px;
+}
+.gjq .controls .btn {
+  -webkit-flex: 1 1 0;
+  flex: 1 1 0;
+  margin-right: 10px;
+  padding-left: 2px;
+  padding-right: 2px;
+  text-align: center;
+}
+.gjq .controls .btn:last-child { margin-right: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gjq .node.current { -webkit-animation: none; animation: none; }
+}
